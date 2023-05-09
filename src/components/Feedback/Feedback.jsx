@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import Section from './Section';
 import FeedbackOptions from './FeedbackOptions';
@@ -5,6 +6,11 @@ import Statistics from './Statistics';
 import Notification from './Notification';
 
 export class Feedback extends React.Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+  };
+
   state = {
     good: 0,
     neutral: 0,
