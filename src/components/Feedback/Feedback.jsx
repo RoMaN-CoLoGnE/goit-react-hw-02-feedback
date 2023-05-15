@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Section from './Section';
 import FeedbackOptions from './FeedbackOptions';
@@ -6,11 +5,6 @@ import Statistics from './Statistics';
 import Notification from './Notification';
 
 export class Feedback extends React.Component {
-  static propTypes = {
-    title: PropTypes.string.isRequired,
-    options: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  };
-
   state = {
     good: 0,
     neutral: 0,
@@ -23,16 +17,28 @@ export class Feedback extends React.Component {
     }));
   };
 
+  calculateTotal = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  };
+
+  calculatePositivePercentage = () => {
+    const { good } = this.state;
+    const total = this.calculateTotal();
+    return total ? ((good / total) * 100).toFixed(2) : 0;
+  };
+
   render() {
     const { good, neutral, bad } = this.state;
-    const total = good + neutral + bad;
-    const positivePercentage = total ? ((good / total) * 100).toFixed(2) : 0;
+    const feedbackOptions = Object.keys(this.state);
+    const total = this.calculateTotal();
+    const positivePercentage = this.calculatePositivePercentage();
 
     return (
       <div>
         <Section title="Please leave Feedback">
           <FeedbackOptions
-            options={['good', 'neutral', 'bad']}
+            options={feedbackOptions}
             onLeaveFeedback={this.handleLeaveFeedback}
           />
         </Section>
